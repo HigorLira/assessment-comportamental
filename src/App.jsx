@@ -321,9 +321,9 @@ function ResultsDashboard({data,onBack}){
 
   const valData=VAL_QS.map(v=>({cat:v.cat,score:r.values[v.id]||0})).sort((a,b)=>b.score-a.score);
 
-  const rSz=480,rCen=rSz/2,rR=130,eqE=Object.entries(eqAvgs),rAng=(Math.PI*2)/eqE.length;
+  const rSz=600,rCen=rSz/2,rR=110,eqE=Object.entries(eqAvgs),rAng=(Math.PI*2)/eqE.length;
   const rPt=(i,val)=>{const a=rAng*i-Math.PI/2,rv=(val/5)*rR;return{x:rCen+rv*Math.cos(a),y:rCen+rv*Math.sin(a)};};
-  const rLbl=(i)=>{const a=rAng*i-Math.PI/2,rv=rR+70;return{x:rCen+rv*Math.cos(a),y:rCen+rv*Math.sin(a)};};
+  const rLbl=(i)=>{const a=rAng*i-Math.PI/2,rv=rR+100;return{x:rCen+rv*Math.cos(a),y:rCen+rv*Math.sin(a)};};
   const EQ_FULL={selfAware:"Autoconsciência",selfReg:"Autorregulação",motivation:"Motivação",empathy:"Empatia",socialSk:"Habilidades Sociais"};
 
   const valColors=[C.coral,C.brown,"#5a8a9a","#e8a84c",C.taupe,C.brownDark,C.coralLight,"#7a9a6a",C.brownLight,"#8a7a9a"];
@@ -433,7 +433,7 @@ function ResultsDashboard({data,onBack}){
           </div>
           {/* Radar — full width, responsive */}
           <div style={{display:"flex",justifyContent:"center",alignItems:"center",padding:"32px 16px",background:`linear-gradient(180deg, ${C.gray}, ${C.white})`}}>
-            <svg viewBox={`0 0 ${rSz} ${rSz}`} style={{width:"100%",maxWidth:480,height:"auto"}}>
+            <svg viewBox={`0 0 ${rSz} ${rSz}`} style={{width:"100%",maxWidth:560,height:"auto"}}>
               <defs><linearGradient id="eqFill" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor={C.coral} stopOpacity="0.15"/><stop offset="100%" stopColor={C.brown} stopOpacity="0.08"/></linearGradient></defs>
               {[1,2,3,4,5].map(l=>{const rv=(l/5)*rR;const pts=eqE.map((_,i)=>{const a=rAng*i-Math.PI/2;return`${rCen+rv*Math.cos(a)},${rCen+rv*Math.sin(a)}`;}).join(" ");return<polygon key={l} points={pts} fill="none" stroke={l===5?C.border:C.border+"66"} strokeWidth={1}/>;})}
               <polygon points={eqE.map(([,avg],i)=>{const p=rPt(i,avg);return`${p.x},${p.y}`;}).join(" ")} fill="url(#eqFill)" stroke={C.coral} strokeWidth={2.5}/>
