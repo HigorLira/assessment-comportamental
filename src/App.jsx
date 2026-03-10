@@ -103,10 +103,14 @@ const DIM_C={energy:C.coral,social:"#5a8a9a",decision:"#e8a84c",adapt:C.brown,fo
 // ═══════════════════════════════════════════════════════════════
 
 const LOGO_URL = "https://www.marcosinacio.adv.br/wp-content/themes/marcos_inacio/assets/img/logo-new.png";
-const Logo = ({ size = 34 }) => (
-  <div style={{width:size,height:size,borderRadius:size>40?16:10,background:C.black,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",flexShrink:0}}>
-    <img src={LOGO_URL} alt="MIA" style={{width:size*0.7,height:size*0.7,objectFit:"contain",filter:"brightness(10)"}} />
-  </div>
+const Logo = ({ size = 34, light = false }) => (
+  <img src={LOGO_URL} alt="Marcos Inácio Advogados" style={{
+    height: size,
+    width: "auto",
+    objectFit: "contain",
+    filter: light ? "brightness(0) invert(1)" : "none",
+    flexShrink: 0,
+  }} />
 );
 
 const FNT=`'Outfit',sans-serif`, MNO=`'JetBrains Mono',monospace`;
@@ -158,13 +162,27 @@ function LoginScreen(){
   const onKey=(e)=>{if(e.key==="Enter")submit();};
 
   return(
-    <div style={{...s.page,background:`linear-gradient(135deg, ${C.black} 0%, #3a332e 100%)`}}><FontLink/>
-      <div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:24}}>
-        <div style={{...s.card,width:"100%",maxWidth:420,padding:40,borderRadius:24,border:"none",boxShadow:"0 20px 60px rgba(0,0,0,0.3)"}}>
-          <div style={{textAlign:"center",marginBottom:32}}>
-            <div style={{margin:"0 auto 16px"}}><Logo size={64} /></div>
-            <h1 style={{fontSize:24,fontWeight:800,margin:"0 0 4px",letterSpacing:-0.5}}>MIA Assessment</h1>
-            <p style={{fontSize:13,color:C.textLight,margin:0}}>{mode==="login"?"Entre na sua conta":"Crie sua conta"}</p>
+    <div style={{...s.page,background:C.black,margin:0}}><FontLink/>
+      <div style={{display:"flex",minHeight:"100vh"}}>
+        {/* Left side — logo showcase */}
+        <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:`linear-gradient(160deg, ${C.black} 0%, #2e2925 50%, ${C.brownDark}33 100%)`,position:"relative",overflow:"hidden",padding:40}}>
+          {/* Decorative circles */}
+          <div style={{position:"absolute",width:400,height:400,borderRadius:"50%",border:`1px solid ${C.brown}15`,top:-100,right:-100,pointerEvents:"none"}}/>
+          <div style={{position:"absolute",width:300,height:300,borderRadius:"50%",border:`1px solid ${C.coral}10`,bottom:-50,left:-50,pointerEvents:"none"}}/>
+          <div style={{position:"absolute",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle, ${C.coral}08 0%, transparent 70%)`,top:"30%",left:"20%",pointerEvents:"none"}}/>
+
+          <Logo size={120} light={true} />
+          <div style={{marginTop:32,textAlign:"center"}}>
+            <h2 style={{fontSize:20,fontWeight:300,color:C.taupe,margin:"0 0 8px",letterSpacing:2,textTransform:"uppercase"}}>Assessment</h2>
+            <p style={{fontSize:13,color:`${C.brown}88`,margin:0,maxWidth:280,lineHeight:1.7}}>Plataforma de avaliação comportamental e mapeamento de perfil profissional</p>
+          </div>
+        </div>
+
+        {/* Right side — form */}
+        <div style={{width:440,display:"flex",flexDirection:"column",justifyContent:"center",background:C.white,padding:"48px 48px"}}>
+          <div style={{marginBottom:32}}>
+            <h1 style={{fontSize:26,fontWeight:800,margin:"0 0 6px",color:C.black,letterSpacing:-0.5}}>{mode==="login"?"Bem-vindo de volta":"Criar conta"}</h1>
+            <p style={{fontSize:14,color:C.textLight,margin:0}}>{mode==="login"?"Entre com suas credenciais para acessar o painel.":"Crie sua conta de administrador para começar."}</p>
           </div>
 
           <div style={{marginBottom:16}}>
@@ -185,6 +203,10 @@ function LoginScreen(){
           <button style={{...s.btn(true),width:"100%",background:`linear-gradient(135deg, ${C.coral}, ${C.coralDark})`,borderRadius:14,padding:"15px 32px",fontSize:15,boxShadow:`0 6px 20px ${C.coral}33`,opacity:loading?0.5:1}} onClick={submit} disabled={loading}>{loading?"Aguarde...":mode==="login"?"Entrar":"Criar conta"}</button>
           <div style={{textAlign:"center",marginTop:16}}>
             <button onClick={()=>{setMode(mode==="login"?"register":"login");setErr("");}} style={{background:"none",border:"none",color:C.brown,fontSize:13,cursor:"pointer",fontFamily:FNT}}>{mode==="login"?"Não tem conta? Criar agora":"Já tem conta? Fazer login"}</button>
+          </div>
+
+          <div style={{marginTop:32,paddingTop:20,borderTop:`1px solid ${C.border}`,textAlign:"center"}}>
+            <p style={{fontSize:11,color:C.textLight,margin:0}}>Plataforma segura · Dados protegidos por Firebase</p>
           </div>
         </div>
       </div>
@@ -299,8 +321,10 @@ function ResultsDashboard({data,onBack}){
 
   const valData=VAL_QS.map(v=>({cat:v.cat,score:r.values[v.id]||0})).sort((a,b)=>b.score-a.score);
 
-  const rSz=280,rCen=rSz/2,rR=rSz/2-45,eqE=Object.entries(eqAvgs),rAng=(Math.PI*2)/eqE.length;
+  const rSz=360,rCen=rSz/2,rR=rSz/2-80,eqE=Object.entries(eqAvgs),rAng=(Math.PI*2)/eqE.length;
   const rPt=(i,val)=>{const a=rAng*i-Math.PI/2,rv=(val/5)*rR;return{x:rCen+rv*Math.cos(a),y:rCen+rv*Math.sin(a)};};
+  const rLbl=(i)=>{const a=rAng*i-Math.PI/2,rv=rR+50;return{x:rCen+rv*Math.cos(a),y:rCen+rv*Math.sin(a)};};
+  const EQ_FULL={selfAware:"Autoconsciência",selfReg:"Autorregulação",motivation:"Motivação",empathy:"Empatia",socialSk:"Habilidades Sociais"};
 
   const valColors=[C.coral,C.brown,"#5a8a9a","#e8a84c",C.taupe,C.brownDark,C.coralLight,"#7a9a6a",C.brownLight,"#8a7a9a"];
 
@@ -406,7 +430,7 @@ function ResultsDashboard({data,onBack}){
               {[1,2,3,4,5].map(l=>{const rv=(l/5)*rR;const pts=eqE.map((_,i)=>{const a=rAng*i-Math.PI/2;return`${rCen+rv*Math.cos(a)},${rCen+rv*Math.sin(a)}`;}).join(" ");return<polygon key={l} points={pts} fill="none" stroke={l===5?C.border:C.border+"66"} strokeWidth={1}/>;})}
               <polygon points={eqE.map(([,avg],i)=>{const p=rPt(i,avg);return`${p.x},${p.y}`;}).join(" ")} fill="url(#eqFill)" stroke={C.coral} strokeWidth={2.5}/>
               {eqE.map(([,avg],i)=>{const p=rPt(i,avg);return<circle key={i} cx={p.x} cy={p.y} r={5} fill={C.coral} stroke={C.white} strokeWidth={2.5}/>;})}
-              {eqE.map(([k],i)=>{const lp=rPt(i,6.5);return<text key={k} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central" fill={C.textMid} fontSize={10} fontWeight={700} fontFamily="Outfit">{EQ_L[k]}</text>;})}
+              {eqE.map(([k],i)=>{const lp=rLbl(i);return<text key={k} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central" fill={C.textMid} fontSize={12} fontWeight={700} fontFamily="Outfit">{EQ_FULL[k]}</text>;})}
             </svg>
           </div>
           <div style={{...s.card,padding:0,overflow:"hidden"}}>
