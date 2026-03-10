@@ -99,8 +99,15 @@ const EQ_L={selfAware:"Autoconsciência",selfReg:"Autorregulação",motivation:"
 const DIM_C={energy:C.coral,social:"#5a8a9a",decision:"#e8a84c",adapt:C.brown,focus:C.brownDark};
 
 // ═══════════════════════════════════════════════════════════════
-// STYLES
+// LOGO & STYLES
 // ═══════════════════════════════════════════════════════════════
+
+const LOGO_URL = "https://www.marcosinacio.adv.br/wp-content/themes/marcos_inacio/assets/img/logo-new.png";
+const Logo = ({ size = 34 }) => (
+  <div style={{width:size,height:size,borderRadius:size>40?16:10,background:C.black,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",flexShrink:0}}>
+    <img src={LOGO_URL} alt="MIA" style={{width:size*0.7,height:size*0.7,objectFit:"contain",filter:"brightness(10)"}} />
+  </div>
+);
 
 const FNT=`'Outfit',sans-serif`, MNO=`'JetBrains Mono',monospace`;
 const s = {
@@ -155,9 +162,7 @@ function LoginScreen(){
       <div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:24}}>
         <div style={{...s.card,width:"100%",maxWidth:420,padding:40,borderRadius:24,border:"none",boxShadow:"0 20px 60px rgba(0,0,0,0.3)"}}>
           <div style={{textAlign:"center",marginBottom:32}}>
-            <div style={{width:64,height:64,borderRadius:16,background:`linear-gradient(135deg, ${C.coral}, ${C.coralDark})`,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",boxShadow:`0 8px 24px ${C.coral}44`}}>
-              <span style={{color:C.white,fontSize:26,fontWeight:900}}>M</span>
-            </div>
+            <div style={{margin:"0 auto 16px"}}><Logo size={64} /></div>
             <h1 style={{fontSize:24,fontWeight:800,margin:"0 0 4px",letterSpacing:-0.5}}>MIA Assessment</h1>
             <p style={{fontSize:13,color:C.textLight,margin:0}}>{mode==="login"?"Entre na sua conta":"Crie sua conta"}</p>
           </div>
@@ -221,7 +226,7 @@ function AdminPanel({user}){
     <div style={s.page}><FontLink/>
       <div style={{borderBottom:`1px solid ${C.border}`,padding:"14px 32px",display:"flex",justifyContent:"space-between",alignItems:"center",background:C.white}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{width:34,height:34,borderRadius:10,background:`linear-gradient(135deg, ${C.coral}, ${C.coralDark})`,display:"flex",alignItems:"center",justifyContent:"center",color:C.white,fontSize:15,fontWeight:800}}>M</div>
+          <Logo size={34} />
           <span style={{fontSize:15,fontWeight:700}}>MIA Assessment</span>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
@@ -497,7 +502,7 @@ function RespondentFlow({assessmentData,assessmentId}){
   const TopBar=()=>(
     <div style={{borderBottom:`1px solid ${C.border}`,padding:"12px 24px",display:"flex",justifyContent:"space-between",alignItems:"center",background:C.white,position:"sticky",top:0,zIndex:10}}>
       <div style={{display:"flex",alignItems:"center",gap:10}}>
-        <div style={{width:28,height:28,borderRadius:7,background:`linear-gradient(135deg,${C.coral},${C.coralDark})`,display:"flex",alignItems:"center",justifyContent:"center",color:C.white,fontSize:12,fontWeight:700}}>M</div>
+        <Logo size={28} />
         <span style={{fontSize:13,fontWeight:600,color:C.textMid}}>MIA Assessment</span>
       </div>
       {step>0&&step<6&&(
