@@ -321,9 +321,9 @@ function ResultsDashboard({data,onBack}){
 
   const valData=VAL_QS.map(v=>({cat:v.cat,score:r.values[v.id]||0})).sort((a,b)=>b.score-a.score);
 
-  const rSz=360,rCen=rSz/2,rR=rSz/2-80,eqE=Object.entries(eqAvgs),rAng=(Math.PI*2)/eqE.length;
+  const rSz=480,rCen=rSz/2,rR=130,eqE=Object.entries(eqAvgs),rAng=(Math.PI*2)/eqE.length;
   const rPt=(i,val)=>{const a=rAng*i-Math.PI/2,rv=(val/5)*rR;return{x:rCen+rv*Math.cos(a),y:rCen+rv*Math.sin(a)};};
-  const rLbl=(i)=>{const a=rAng*i-Math.PI/2,rv=rR+50;return{x:rCen+rv*Math.cos(a),y:rCen+rv*Math.sin(a)};};
+  const rLbl=(i)=>{const a=rAng*i-Math.PI/2,rv=rR+70;return{x:rCen+rv*Math.cos(a),y:rCen+rv*Math.sin(a)};};
   const EQ_FULL={selfAware:"Autoconsciência",selfReg:"Autorregulação",motivation:"Motivação",empathy:"Empatia",socialSk:"Habilidades Sociais"};
 
   const valColors=[C.coral,C.brown,"#5a8a9a","#e8a84c",C.taupe,C.brownDark,C.coralLight,"#7a9a6a",C.brownLight,"#8a7a9a"];
@@ -423,29 +423,32 @@ function ResultsDashboard({data,onBack}){
         </div>
 
         {/* EQ */}
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:24}}>
-          <div style={{...s.card,display:"flex",justifyContent:"center",alignItems:"center",background:`linear-gradient(135deg, ${C.gray}, ${C.white})`}}>
-            <svg width={rSz} height={rSz} viewBox={`0 0 ${rSz} ${rSz}`}>
+        <div style={{...s.card,marginBottom:24,padding:0,overflow:"hidden"}}>
+          <div style={{background:`linear-gradient(135deg, ${C.coral}12, ${C.gray})`,padding:"24px 28px 16px",borderBottom:`1px solid ${C.border}`,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+            <div>
+              <h3 style={{fontSize:18,fontWeight:800,margin:"0 0 4px"}}>Inteligência Emocional</h3>
+              <p style={{fontSize:13,color:C.textMid,margin:0}}>Avaliação das 5 dimensões da IE</p>
+            </div>
+            <div style={{fontFamily:MNO,fontSize:40,fontWeight:700,color:C.coral,lineHeight:1}}>{eqOvr.toFixed(1)}<span style={{fontSize:16,color:C.textLight}}>/5.0</span></div>
+          </div>
+          {/* Radar — full width, responsive */}
+          <div style={{display:"flex",justifyContent:"center",alignItems:"center",padding:"32px 16px",background:`linear-gradient(180deg, ${C.gray}, ${C.white})`}}>
+            <svg viewBox={`0 0 ${rSz} ${rSz}`} style={{width:"100%",maxWidth:480,height:"auto"}}>
               <defs><linearGradient id="eqFill" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor={C.coral} stopOpacity="0.15"/><stop offset="100%" stopColor={C.brown} stopOpacity="0.08"/></linearGradient></defs>
               {[1,2,3,4,5].map(l=>{const rv=(l/5)*rR;const pts=eqE.map((_,i)=>{const a=rAng*i-Math.PI/2;return`${rCen+rv*Math.cos(a)},${rCen+rv*Math.sin(a)}`;}).join(" ");return<polygon key={l} points={pts} fill="none" stroke={l===5?C.border:C.border+"66"} strokeWidth={1}/>;})}
               <polygon points={eqE.map(([,avg],i)=>{const p=rPt(i,avg);return`${p.x},${p.y}`;}).join(" ")} fill="url(#eqFill)" stroke={C.coral} strokeWidth={2.5}/>
-              {eqE.map(([,avg],i)=>{const p=rPt(i,avg);return<circle key={i} cx={p.x} cy={p.y} r={5} fill={C.coral} stroke={C.white} strokeWidth={2.5}/>;})}
-              {eqE.map(([k],i)=>{const lp=rLbl(i);return<text key={k} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central" fill={C.textMid} fontSize={12} fontWeight={700} fontFamily="Outfit">{EQ_FULL[k]}</text>;})}
+              {eqE.map(([,avg],i)=>{const p=rPt(i,avg);return<circle key={i} cx={p.x} cy={p.y} r={6} fill={C.coral} stroke={C.white} strokeWidth={3}/>;})}
+              {eqE.map(([k],i)=>{const lp=rLbl(i);return<text key={k} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central" fill={C.textMid} fontSize={15} fontWeight={700} fontFamily="Outfit">{EQ_FULL[k]}</text>;})}
             </svg>
           </div>
-          <div style={{...s.card,padding:0,overflow:"hidden"}}>
-            <div style={{background:`linear-gradient(135deg, ${C.coral}12, ${C.gray})`,padding:"24px 28px 16px",borderBottom:`1px solid ${C.border}`}}>
-              <h3 style={{fontSize:16,fontWeight:800,margin:"0 0 4px"}}>Inteligência Emocional</h3>
-              <div style={{fontFamily:MNO,fontSize:36,fontWeight:700,color:C.coral}}>{eqOvr.toFixed(1)}<span style={{fontSize:14,color:C.textLight}}>/5.0</span></div>
-            </div>
-            <div style={{padding:"20px 28px"}}>
-              {Object.entries(eqAvgs).map(([k,avg])=>{const pct=(avg/5)*100;const colors=[C.coral,C.brown,"#5a8a9a","#e8a84c",C.brownDark];const ci=Object.keys(eqAvgs).indexOf(k);const color=colors[ci]||C.coral;return(
-                <div key={k} style={{marginBottom:14}}>
-                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:12,fontWeight:600,color:C.textMid}}>{EQ_L[k]}</span><span style={{fontFamily:MNO,fontSize:12,fontWeight:700,color}}>{avg.toFixed(1)}</span></div>
-                  <div style={{height:8,background:C.gray,borderRadius:10,overflow:"hidden",border:`1px solid ${C.border}`}}><div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg, ${color}88, ${color})`,borderRadius:10}}/></div>
-                </div>
-              );})}
-            </div>
+          {/* Bars */}
+          <div style={{padding:"20px 28px",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px 24px",borderTop:`1px solid ${C.border}`}}>
+            {Object.entries(eqAvgs).map(([k,avg])=>{const pct=(avg/5)*100;const colors=[C.coral,C.brown,"#5a8a9a","#e8a84c",C.brownDark];const ci=Object.keys(eqAvgs).indexOf(k);const color=colors[ci]||C.coral;return(
+              <div key={k} style={{marginBottom:4}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:13,fontWeight:600,color:C.textMid}}>{EQ_FULL[k]}</span><span style={{fontFamily:MNO,fontSize:13,fontWeight:700,color}}>{avg.toFixed(1)}</span></div>
+                <div style={{height:8,background:C.gray,borderRadius:10,overflow:"hidden",border:`1px solid ${C.border}`}}><div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg, ${color}88, ${color})`,borderRadius:10}}/></div>
+              </div>
+            );})}
           </div>
         </div>
 
