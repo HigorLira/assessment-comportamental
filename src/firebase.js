@@ -37,12 +37,12 @@ import {
 // │  COLE SUAS CREDENCIAIS DO FIREBASE AQUI         │
 // └─────────────────────────────────────────────────┘
 const firebaseConfig = {
-  apiKey:            "COLE_SUA_API_KEY_AQUI",
-  authDomain:        "SEU-PROJETO.firebaseapp.com",
-  projectId:         "SEU-PROJETO",
-  storageBucket:     "SEU-PROJETO.firebasestorage.app",
-  messagingSenderId: "000000000000",
-  appId:             "1:000000000000:web:xxxxxxxxxxxxxxxx",
+  apiKey: "AIzaSyAauBYDkZDJx5L9XJVblMseTBp6hQIj2Z0",
+  authDomain: "assessment-comportamental.firebaseapp.com",
+  projectId: "assessment-comportamental",
+  storageBucket: "assessment-comportamental.firebasestorage.app",
+  messagingSenderId: "316178954689",
+  appId: "1:316178954689:web:ddf59e8d515013b03f9740"
 };
 
 const app = initializeApp(firebaseConfig);
